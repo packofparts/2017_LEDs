@@ -11,24 +11,29 @@ int inputRed = 0;
 int inputBlue = 0;
 void setup() {
   FastLED.addLeds<WS2812B, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
-  pinMode(inputRedPin, INPUT);
-  pinMode(inputBluePin, INPUT);
+  pinMode(inputRedPin, INPUT_PULLUP);
+  pinMode(inputBluePin, INPUT_PULLUP);
 }
 
 void loop() {
   inputRed = digitalRead(inputRedPin);
   inputBlue = digitalRead(inputBluePin);
-  if(inputRed == HIGH && inputBlue == LOW){
+  if(inputRed == LOW && inputBlue == HIGH){
     fill_solid( leds, NUM_LEDS, CRGB::Red);
     FastLED.show();
   }
-  else if(inputBlue == HIGH && inputRed == LOW){
+  else if(inputBlue == LOW && inputRed == HIGH){
     fill_solid( leds, NUM_LEDS, CRGB::Blue);
     FastLED.show();
   }
-  else if(inputBlue == LOW && inputRed == LOW){
-    cylon(CRGB::Red, 1, 1);
-    cylon(CRGB::Blue, 1, 1);
+  else if(inputBlue == HIGH && inputRed == HIGH){
+    while(inputBlue == HIGH && inputRed == HIGH){
+      cylon(CRGB::Red, 1, 1);
+      cylon(CRGB::Blue, 1, 1);
+      cylon(CRGB::Green, 1, 1);
+      cylon(CRGB::Cyan, 1, 1);
+      cylon(CRGB::Yellow, 1, 1);
+    }
   }
 }
 void cylon(CRGB color, uint16_t wait, uint8_t number_of_cycles){
